@@ -1,0 +1,16 @@
+[package]
+name = "wei-wsl"
+version = "0.1.0"
+edition = "2021"
+
+description = "wei wsl"
+documentation = "https://github.com/zuiyue-com/wei-wsl"
+homepage = "https://github.com/zuiyue-com/wei-wsl"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+wei-run = { path = "../wei-run" }
+wei-log = "0.2.10"
+wei-env = "0.2.13"
+wei-single = "0.3.5"
+wei-windows ={ path = "../wei-windows" }
