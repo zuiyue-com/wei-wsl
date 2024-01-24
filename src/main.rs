@@ -62,15 +62,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn run_server() -> Result<(), Box<dyn std::error::Error>> {
-    match wei_run::command_async("wsl", vec!["wei-wsl-server"]) {
-        Ok(c) => {
-            info!("run_server: {:?}", c);
-        },
-        Err(e) => {
-            info!("Run_server Error: {}", e);
-            return Ok(());
-        }
-    }
+    wei_run::command("wsl", vec!["killall", "wei-wsl-server"])?;
+    wei_run::command_async("wsl", vec!["wei-wsl-server"])?;
 
     std::thread::sleep(std::time::Duration::from_secs(1));
     Ok(())
