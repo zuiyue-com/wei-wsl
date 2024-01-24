@@ -17,9 +17,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         let wei_wsl_server_version = format!("{}/version", wsl_url);
 
-        let data = ureq::get(&wei_wsl_server_version)
+        let data = match ureq::get(&wei_wsl_server_version)
             .set("Content-Type", "application/json")
-            .call()?.into_string()?;
+            .call() {
+                Ok(c) => c,
+                Err(_) => {
+                    run_server()?;
+                    continue;
+                }
+            }.into_string()?;
 
         if data != "wei-wsl-server" {
             run_server()?;
@@ -43,7 +49,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn run_server() -> Result<(), Box<dyn std::error::Error>> {
-    wei_run::command_async("wsl", vec!["wei-wsl-server"])?;
+    match wei_run::command_async("wsl", vec!["wei-wsl-server"]) {
+        Ok(_) => {},
+        Err(e) => {
+            println!("Error: {}", e);
+            return Ok(());
+        }
+    }
     std::thread::sleep(std::time::Duration::from_secs(1));
     Ok(())
 }
